@@ -10,9 +10,9 @@ public class Player extends Tank {
         orient = UP;
         images = new Image[]{
                 new ImageIcon("D:\\HocJava\\Tank90\\src\\src\\images\\player_green_left.png").getImage(),
-                new ImageIcon("D:\\HocJava\\Tank90\\src\\src\\images\\player_green_down.png").getImage(),
                 new ImageIcon("D:\\HocJava\\Tank90\\src\\src\\images\\player_green_right.png").getImage(),
                 new ImageIcon("D:\\HocJava\\Tank90\\src\\src\\images\\player_green_up.png").getImage(),
+                new ImageIcon("D:\\HocJava\\Tank90\\src\\src\\images\\player_green_down.png").getImage(),
         };
     }
 }
