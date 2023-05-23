@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.BitSet;
+import java.util.Random;
 
 public class CustomPanel extends JPanel implements Runnable, KeyListener {
 
@@ -18,6 +19,7 @@ public class CustomPanel extends JPanel implements Runnable, KeyListener {
         gameManager = new GameManager();
         gameManager.initGameManager();
         bitSet = new BitSet(256);
+        setBackground(Color.black);
         setFocusable(true);
         this.addKeyListener(this);
 
@@ -36,7 +38,9 @@ public class CustomPanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
+        int count = 0;
         while (true) {
+            count++;
             if (bitSet.get(KeyEvent.VK_LEFT)) {
                 gameManager.playerMove(Tank.LEFT);
             } else if (bitSet.get(KeyEvent.VK_RIGHT)) {
@@ -45,9 +49,19 @@ public class CustomPanel extends JPanel implements Runnable, KeyListener {
                 gameManager.playerMove(Tank.UP);
             } else if (bitSet.get(KeyEvent.VK_DOWN)) {
                 gameManager.playerMove(Tank.DOWN);
-            } else if (bitSet.get(KeyEvent.VK_SPACE)) {
+            }
+            gameManager.bossMove();
+
+            if (bitSet.get(KeyEvent.VK_SPACE)) {
+                if (count > 20) {
+                    gameManager.playerFire();
+                    count = 0;
+                }
 
             }
+            gameManager.bulletMove();
+
+
             synchronized (CustomPanel.this) {
                 repaint();
             }
@@ -73,5 +87,9 @@ public class CustomPanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         bitSet.clear(e.getKeyCode());
+    }
+
+    private static int getRandomNumberInRange() {
+        return (int) (Math.random() * 4);
     }
 }

@@ -8,6 +8,7 @@ public class Player extends Tank {
     public Player(int x, int y) {
         super(x, y);
         orient = UP;
+        this.speed = 5;
         images = new Image[]{
                 new ImageIcon("D:\\HocJava\\Tank90\\src\\src\\images\\player_green_left.png").getImage(),
                 new ImageIcon("D:\\HocJava\\Tank90\\src\\src\\images\\player_green_right.png").getImage(),
@@ -15,4 +16,6 @@ public class Player extends Tank {
                 new ImageIcon("D:\\HocJava\\Tank90\\src\\src\\images\\player_green_down.png").getImage(),
         };
     }
+
+
 }

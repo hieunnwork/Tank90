@@ -16,7 +16,7 @@ public class Tank {
     protected int y;
     protected int orient;
 
-    protected int speed = 5;
+    protected int speed;
     protected Image[] images;
 
     public Tank(int x, int y) {
@@ -30,7 +30,17 @@ public class Tank {
     }
 
     public void changeOrient(int newOrient) {
-        orient = newOrient;
+        if (x <= 0) {
+            orient = newOrient;
+        } else if (y <= 0) {
+            orient = newOrient;
+        } else if (x >= CustomFrame.W_FRAME - images[orient].getWidth(null) - 17) {
+            orient = newOrient;
+        } else if (y >= CustomFrame.H_FRAME - images[orient].getWidth(null) - 40) {
+            orient = newOrient;
+        }
+
+
     }
 
     public void move() {
@@ -57,5 +67,11 @@ public class Tank {
         } else if (y > CustomFrame.H_FRAME - images[orient].getWidth(null) - 40) {
             y = CustomFrame.H_FRAME - images[orient].getHeight(null) - 40;
         }
+    }
+
+    public Bullet fire() {
+        int x = this.x + images[orient].getWidth(null) / 2;
+        int y = this.y + images[orient].getHeight(null) / 2;
+        return new Bullet(x, y, orient);
     }
 }
