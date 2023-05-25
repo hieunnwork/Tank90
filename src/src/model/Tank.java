@@ -4,6 +4,7 @@ import gui.CustomFrame;
 import gui.CustomPanel;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Tank {
 
@@ -29,7 +30,7 @@ public class Tank {
         g2d.drawImage(images[orient], x, y, null);
     }
 
-    public void changeOrient(int newOrient) {
+    public void changeOrientBoss(int newOrient) {
         if (x <= 0) {
             orient = newOrient;
         } else if (y <= 0) {
@@ -43,7 +44,15 @@ public class Tank {
 
     }
 
-    public void move() {
+    public void changeOrient(int newOrient) {
+        orient = newOrient;
+
+
+    }
+
+    public void move(ArrayList<Map> maps) {
+        int xRaw = x;
+        int yRaw = y;
         switch (orient) {
             case LEFT:
                 x -= speed;
@@ -58,14 +67,18 @@ public class Tank {
                 y += speed;
                 break;
         }
-        if (x < 0) {
+        boolean checkMap = checkMap(maps);
+        if (!checkMap) {
+            x = xRaw;
+            y = yRaw;
+        } else if (x < 0) {
             x = 0;
         } else if (y < 0) {
             y = 0;
         } else if (x > CustomFrame.W_FRAME - images[orient].getWidth(null) - 17) {
             x = CustomFrame.W_FRAME - images[orient].getWidth(null) - 17;
-        } else if (y > CustomFrame.H_FRAME - images[orient].getWidth(null) - 40) {
-            y = CustomFrame.H_FRAME - images[orient].getHeight(null) - 40;
+        } else if (y > CustomFrame.H_FRAME - images[orient].getWidth(null) - 35) {
+            y = CustomFrame.H_FRAME - images[orient].getHeight(null) - 35;
         }
     }
 
@@ -73,5 +86,31 @@ public class Tank {
         int x = this.x + images[orient].getWidth(null) / 2;
         int y = this.y + images[orient].getHeight(null) / 2;
         return new Bullet(x, y, orient);
+    }
+
+    public Rectangle getRec() {
+        this.x = x;
+        this.y = y;
+        int xNew = images[orient].getWidth(null);
+        int yNew = images[orient].getHeight(null);
+        Rectangle rectangle;
+        if (orient == LEFT || orient == RIGHT) {
+            yNew -= 2;
+        } else if (orient == UP || orient == DOWN) {
+            xNew -= 2;
+
+        }
+        rectangle = new Rectangle(x, y, xNew, yNew);
+        return rectangle;
+    }
+
+    public boolean checkMap(ArrayList<Map> maps) {
+        for (Map map : maps) {
+            Rectangle rectangle = getRec().intersection(map.getRec());
+            if (!rectangle.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

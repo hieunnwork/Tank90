@@ -38,9 +38,11 @@ public class CustomPanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        int count = 0;
+        int resetBulletPlayer = 0;
+        int resetBulletBoss = 0;
         while (true) {
-            count++;
+            resetBulletPlayer++;
+            resetBulletBoss++;
             if (bitSet.get(KeyEvent.VK_LEFT)) {
                 gameManager.playerMove(Tank.LEFT);
             } else if (bitSet.get(KeyEvent.VK_RIGHT)) {
@@ -51,13 +53,15 @@ public class CustomPanel extends JPanel implements Runnable, KeyListener {
                 gameManager.playerMove(Tank.DOWN);
             }
             gameManager.bossMove();
-
+            if (resetBulletBoss >= 100) {
+                gameManager.BossFire();
+                resetBulletBoss = 0;
+            }
             if (bitSet.get(KeyEvent.VK_SPACE)) {
-                if (count > 20) {
+                if (resetBulletPlayer > 20) {
                     gameManager.playerFire();
-                    count = 0;
+                    resetBulletPlayer = 0;
                 }
-
             }
             gameManager.bulletMove();
 

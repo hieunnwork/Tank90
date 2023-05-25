@@ -20,24 +20,33 @@ public class GameManager {
 
     private ArrayList<Map> maps;
 
+    private Random r;
+
 
     public void initGameManager() {
-        player = new Player(200, 200);
+        player = new Player(155, 400);
         for (int i = 0; i < 10; i++) {
-            Boss boss = new Boss(getRandomNumberInRange(50, 350), getRandomNumberInRange(50, 350));
+            Boss boss = new Boss(getRandomNumberInRange(50, 450), getRandomNumberInRange(50, 450));
             bossList.add(boss);
         }
         maps = new ArrayList<>();
+        r = new Random();
         readMap("D:\\HocJava\\Tank90\\src\\src\\map\\map.txt");
 
 
     }
 
     public void bossMove() {
-
         for (int i = 0; i < bossList.size(); i++) {
-            bossList.get(i).changeOrient((getRandomNumberInRange(0, 3)));
-            bossList.get(i).move();
+            int newOrient = r.nextInt(4);
+            for (int j = 0; j < bossList.size(); j++) {
+                boolean isExit = bossList.get(j).checkMap(maps);
+                if (!isExit) {
+                    bossList.get(i).changeOrientBoss(newOrient);
+                }
+            }
+
+            bossList.get(i).move(maps);
 
         }
 
@@ -65,21 +74,34 @@ public class GameManager {
 
     public void playerMove(int orient) {
         player.changeOrient(orient);
-        player.move();
+        player.move(maps);
     }
 
     public void bulletMove() {
+        boolean isExit;
         for (int i = 0; i < bullets.size(); i++) {
             Boolean check = bullets.get(i).move();
             if (check) {
                 bullets.remove(i);
+            }
+
+        }
+        for (int j = 0; j < maps.size(); j++) {
+            isExit = maps.get(j).checkBullet(bullets);
+            if (!isExit) {
             }
         }
     }
 
     public void playerFire() {
         bullets.add(player.fire());
-        System.out.println(bullets.size());
+    }
+
+    public void BossFire() {
+        for (int i = 0; i < bossList.size(); i++) {
+            bullets.add(bossList.get(i).fire());
+        }
+
     }
 
 

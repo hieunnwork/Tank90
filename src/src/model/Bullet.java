@@ -16,7 +16,7 @@ public class Bullet {
         this.x = x - image.getWidth(null) / 2;
         this.y = y - image.getHeight(null) / 2;
         this.orient = orient;
-        speed = 2;
+        speed = 4;
 
     }
 
@@ -44,5 +44,11 @@ public class Bullet {
             return true;
         }
         return false;
+    }
+
+    public Rectangle getRec() {
+        Rectangle rectangle;
+        rectangle = new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+        return rectangle;
     }
 }
